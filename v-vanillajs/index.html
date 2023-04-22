@@ -13,20 +13,20 @@
   <body class="center">
     <main>
       <div class="grid" data-id="grid">
-        <div class="turn turquoise" data-id="turn">
-          <i class="fa-solid fa-x"></i>
-          <p>Player 1, you're up!</p>
+        <div class="turn" data-id="turn">
+          <i class="fa-solid fa-x turquoise"></i>
+          <p class="turquoise">Player 1, you're up!</p>
         </div>
 
         <div class="menu" data-id="menu">
-          <button class="menu-btn">
+          <button class="menu-btn" data-id="menu-btn">
             Actions
             <i class="fa-solid fa-chevron-down"></i>
           </button>
 
           <div class="items hidden shadow" data-id="items">
-            <button data-id="reset-btn">Reset</button>
-            <button data-id="new-round-btn">New Round</button>
+            <button data-id="reset-btn" type="button">Reset</button>
+            <button data-id="new-round-btn" type="button">New Round</button>
           </div>
         </div>
 
@@ -42,7 +42,7 @@
 
         <div class="score shadow" style="background-color: var(--turquoise)">
           <p>Player 1</p>
-          <span data-id="p1-wins">0 Wins</span>
+          <span data-id="p1-score">0 Wins</span>
         </div>
         <div class="score shadow" style="background-color: var(--light-gray)">
           <p>Ties</p>
@@ -50,13 +50,13 @@
         </div>
         <div class="score shadow" style="background-color: var(--yellow)">
           <p>Player 2</p>
-          <span data-id="p2-wins">0 Wins</span>
+          <span data-id="p2-score">0 Wins</span>
         </div>
       </div>
     </main>
 
     <footer>
-      <p>Created By Daniel <a href="https://www.google.com">LinkThree</a></p>
+      <p>Created By Daniel <a href="https://www.google.com" class="link">LinkThree</a></p>
     </footer>
 
     <div class="modal hidden" data-id="modal">
