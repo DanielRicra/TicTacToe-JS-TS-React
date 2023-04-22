@@ -14,6 +14,7 @@ class View {
     this.elements.playerOneScore = this.#findElement("[data-id='p1-score']");
     this.elements.playerTwoScore = this.#findElement("[data-id='p2-score']");
     this.elements.ties = this.#findElement("[data-id='ties']");
+    this.elements.grid = this.#findElement("[data-id='grid']");
     
     this.elements.squares = this.#findElements("[data-id='square']");
 
@@ -21,6 +22,27 @@ class View {
     this.elements.menu.addEventListener("click", (event) => {
       this.#toggleMenu();
     });
+  }
+
+  render(game, stats) {    
+    const { playerWithStats, ties } = stats;
+    const { moves, currentPlayer, status: { isComplete, winner } } = game;
+    
+    this.#hideModal();
+    this.#clearBoard();
+    this.#updateScoreBoard(
+      playerWithStats[0].wins,
+      playerWithStats[1].wins,
+      ties
+    );
+    this.#initializeMoves(moves);
+
+    if (isComplete) {
+      this.#showModal(winner ? `Player ${winner.name} wins!` : "It's a tie!");
+      return;
+    }
+
+    this.#setTurnIndicator(currentPlayer);
   }
   
   /**
@@ -37,48 +59,41 @@ class View {
   }
 
   bindPlayerMoveEvent(handler) {
-    this.elements.squares.forEach((square) => {
-      square.addEventListener("click", () => handler(square));
-    });
+    this.#delegate(this.elements.grid, "[data-id='square']", "click", handler);
   }
 
   /**
    * DOM helper methods
    */
-  updateScoreBoard(p1Score, p2Score, ties) {
+  #updateScoreBoard(p1Score, p2Score, ties) {
     this.elements.playerOneScore.textContent = `${p1Score} wins`;
     this.elements.playerTwoScore.textContent = `${p2Score} wins`;
     this.elements.ties.textContent = `${ties} ties`;
   }
 
-  clearBoard() {
+  #clearBoard() {
     this.elements.squares.forEach((square) => {
       square.replaceChildren();
     });
   }
 
-  showModal(message) {
+  #initializeMoves(moves) {
+    this.elements.squares.forEach((square) => {
+      const existingMove = moves.find((move) => move.squareId === +square.id);
+
+      if (existingMove) {
+        this.#handlerPlayerMove(square, existingMove.player);
+      }
+    });   
+  }
+
+  #showModal(message) {
     this.elements.modal.classList.remove("hidden");
     this.elements.modalText.textContent = message;
   }
 
   #hideModal() {
     this.elements.modal.classList.add("hidden");
-  }
-
-  closeAll() {
-    this.#hideModal();
-    // this.#closeMenu();
-  }
-
-  #closeMenu() {
-    this.elements.menuItems.classList.add("hidden");
-    this.elements.menuButton.classList.remove("border");
-
-    const icon = this.elements.menuButton.querySelector("i");
-
-    icon.classList.remove("fa-chevron-down");
-    icon.classList.add("fa-chevron-up");
   }
 
   #toggleMenu() {
@@ -100,7 +115,7 @@ class View {
     return element;
   }
 
-  handlerPlayerMove(squareElement, player) {
+  #handlerPlayerMove(squareElement, player) {
       const icon = document.createElement("i");
       icon.classList.add(
         "fa-solid",
@@ -111,7 +126,7 @@ class View {
   }
 
   // player 1 | 2
-  setTurnIndicator(player) {
+  #setTurnIndicator(player) {
     const icon = document.createElement("i");
     const label  = document.createElement("p");
     
@@ -130,6 +145,16 @@ class View {
       throw new Error(`No such elements: ${selector}`);
     }
     return elements;
+  }
+
+  #delegate(element, selector, eventKey, handler) {
+    element.addEventListener(eventKey, (event) => {
+      const target = event.target;
+
+      if(target.matches(selector)) {
+        handler(target);
+      }
+    });
   }
 } 
 

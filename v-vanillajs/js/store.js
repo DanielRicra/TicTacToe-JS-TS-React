@@ -7,10 +7,10 @@ const initialValues = {
   }
 }
 
-class Store {
-  #state = initialValues;
-
-  constructor(players) {
+class Store extends EventTarget {
+  constructor(key, players) {
+    super();
+    this.key = key;
     this.players = players;
   }
 
@@ -110,7 +110,8 @@ class Store {
    }
 
   #getState() {
-    return this.#state;
+    const state = localStorage.getItem(this.key);
+    return state ? JSON.parse(state) : initialValues;
   }
 
   #saveState(stateOrFn) {
@@ -130,8 +131,9 @@ class Store {
       }
     }
 
-    this.#state = newState;
+    localStorage.setItem(this.key, JSON.stringify(newState));
+    this.dispatchEvent(new Event("state-change"));
   }
 }
 
-export  default Store;
+export default Store;
