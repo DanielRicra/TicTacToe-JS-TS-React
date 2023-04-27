@@ -56,7 +56,7 @@ class View {
     this.elements.newRoundButton.addEventListener("click", handler);
   }
 
-  bindPlayerMoveEvent(handler: () => void) {
+  bindPlayerMoveEvent(handler: (square: HTMLElement) => void) {
     this.#delegate(this.elements.grid, "[data-id=square]", "click", handler);
   }
 
@@ -73,7 +73,7 @@ class View {
   }
 
   #initializeMoves(moves: GameMove[]) {
-    this.elementLists.square.forEach((square) => {
+    this.elementLists.squares.forEach((square) => {
       const markedSquare = moves.find((move) => move.squareId === +square.id);
       
       if (markedSquare) {
@@ -84,7 +84,7 @@ class View {
 
   #showModal(message: string) {
     this.elements.modal.classList.remove("hidden");
-    this.elements.textModal.textContent = message;
+    this.elements.modalText.textContent = message;
   }
 
   #hideModal() {
@@ -145,7 +145,7 @@ class View {
     return elements as NodeListOf<HTMLElement>;
   }
 
-  #delegate(element: HTMLElement, selector: string, eventKey: string, handler: (e: Element) => void) {
+  #delegate(element: HTMLElement, selector: string, eventKey: string, handler: (element: HTMLElement) => void) {
     element.addEventListener(eventKey, (event) => {
       const target = event.target;
 
@@ -154,7 +154,7 @@ class View {
       }
 
       if (target.matches(selector)) {
-        handler(target);
+        handler(target as HTMLElement);
       }
     })
   }
