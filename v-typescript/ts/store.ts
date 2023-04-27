@@ -92,7 +92,7 @@ class Store extends EventTarget {
   }
 
   reset() {
-    const stateClone: StoreState = structuredClone(this.#getState);
+    const stateClone: StoreState = structuredClone(this.#getState());
 
     const { moves, status } = this.game;
 
@@ -109,7 +109,7 @@ class Store extends EventTarget {
   }
 
   newRound() {
-    const stateClone: StoreState = structuredClone(this.#getState);
+    const stateClone: StoreState = structuredClone(this.#getState());
     const { moves, status } = this.game;
 
     if (this.game.status.isComplete) {
@@ -133,7 +133,7 @@ class Store extends EventTarget {
 
   #saveState(state: StoreState): void {
     localStorage.setItem(this.storageKey, JSON.stringify(state));
-    this.dispatchEvent(new Event("state-change"));
+    this.dispatchEvent(new Event("state-changed"));
   }
 }
 
