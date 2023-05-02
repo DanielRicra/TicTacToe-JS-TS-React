@@ -1,5 +1,3 @@
-import View from "./view";
-
 
 export type Player = {
   id: number;
