@@ -1,0 +1,40 @@
+.menu {
+  position: relative;
+}
+
+.menu .items {
+  position: absolute;
+  z-index: 10;
+  top: 60px;
+  right: 0;
+  background-color: #203139;
+  border-radius: 4px;
+  padding: .6rem 0;
+}
+
+.menu .items button {
+  background-color: transparent;
+  padding: 8px;
+  color: var(--white);
+  font-size: 1rem;
+  width: 100%;
+  text-align: left;
+}
+
+.menu .items button:hover {
+  background-color: #294d5f;
+}
+
+.menu-btn {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 10px;
+  color: var(--white);
+  background-color: rgba(211, 211, 211, 0.1);
+  border: 1px solid transparent;
+  font-size: 1rem;
+  font-weight: 700;
+}
